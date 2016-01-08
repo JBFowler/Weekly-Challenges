@@ -71,26 +71,25 @@ class Robot
   attr_accessor :bearing, :x_coord, :y_coord
 
   def orient(direction)
+    raise ArgumentError, 'Invalid Direction' unless DIRECTIONS.include?(direction)
     self.bearing = direction
-    raise ArgumentError, "must be a valid direction" if !DIRECTIONS.include?(direction)
   end
 
   def turn_right
-    bearing_index = DIRECTIONS.index(bearing)
-    if bearing_index == 3
-      orient(DIRECTIONS[0])
-    else
-      orient(DIRECTIONS[bearing_index + 1])
-    end
+    turn(1, 2, 3, 0)
   end
 
   def turn_left
-    bearing_index = DIRECTIONS.index(bearing)
-    if bearing_index == 0
-      orient(DIRECTIONS[3])
-    else
-      orient(DIRECTIONS[bearing_index - 1])
-    end
+    turn(3, 0, 1, 2)
+  end
+
+  def turn(w, n, e, s)
+    self.bearing = case bearing
+                   when :west then DIRECTIONS[w]
+                   when :north then DIRECTIONS[n]
+                   when :east then DIRECTIONS[e]
+                   when :south then DIRECTIONS[s]
+                   end
   end
 
   def at(x, y)
@@ -116,11 +115,12 @@ class Robot
   end
 end
 
+# Top Level Class
 class Simulator
   INSTRUCTIONS = { 'L' => :turn_left, 'R' => :turn_right, 'A' => :advance }
 
   def instructions(string)
-    string.each_char.map do |char|
+    string.upcase.each_char.map do |char|
       INSTRUCTIONS[char]
     end
   end
@@ -130,8 +130,8 @@ class Simulator
     robot.orient(direction)
   end
 
-  def evaluate(robot, string)
-    instructions(string).each do |command|
+  def evaluate(robot, instructions)
+    instructions(instructions).each do |command|
       robot.send(command)
     end
   end
