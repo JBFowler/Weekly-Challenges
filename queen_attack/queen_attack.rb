@@ -14,15 +14,15 @@
 # _ _ _ _ _ _ _ _
 
 # You'd also be able to answer whether the queens can attack each other. In this case, that answer would be yes, they can, because both pieces share a diagonal.
-require 'pry'
 
+# Top level Class
 class Queens
   attr_reader :white, :black
 
   def initialize(white: [0, 3], black: [7, 3])
     @white = white
     @black = black
-    fail ArgumentError, 'Queens cannot share a place on the board' if white == black
+    fail ArgumentError, 'Queens cannot share place on board' if white == black
   end
 
   def to_s
@@ -49,10 +49,11 @@ class Queens
   end
 
   def diagonal?
-    (white[0] == white[1] && black[0] == black[1]) ||
-    ((white[0] - black[0]) == (black[1] - white[1])) ||
-    ((black[0] - white[0]) == (white[1] - black[1])) ||
-    ((black[0] - white[0]) == (black[1] - white[1])) ||
-    ((white[0] - black[0]) == (white[1] - black[1]))
+    (white[0] - black[0]).abs == (white[1] - black[1]).abs
+    # (white[0] == white[1] && black[0] == black[1]) ||
+    #   ((white[0] - black[0]) == (black[1] - white[1])) ||
+    #   ((black[0] - white[0]) == (white[1] - black[1])) ||
+    #   ((black[0] - white[0]) == (black[1] - white[1])) ||
+    #   ((white[0] - black[0]) == (white[1] - black[1]))
   end
 end
