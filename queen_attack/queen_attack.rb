@@ -27,13 +27,9 @@ class Queens
 
   def to_s
     squares = Array.new(8) { Array.new(8, '_') }
-    place_queens_on_square(squares)
-    squares.map { |row| row.join(' ') }.join("\n")
-  end
-
-  def place_queens_on_square(squares)
     squares[white[0]][white[1]] = 'W'
     squares[black[0]][black[1]] = 'B'
+    squares.map { |row| row.join(' ') }.join("\n")
   end
 
   def attack?
