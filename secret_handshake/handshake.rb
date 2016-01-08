@@ -17,16 +17,17 @@
 # - initialize(number)
 # - commands
 # - possible 'case' or methods for handshake style using if functions
-# - Need methods to calculate binary code value  
+# - Need methods to calculate binary code value
 # - Create Constant that holds array to represent handshakes
 
+# Top level class
 class SecretHandshake
   GESTURES = ['wink', 'double blink', 'close your eyes', 'jump']
   REVERSE_GESTURES = ['jump', 'close your eyes', 'double blink', 'wink']
   # attr_accessor :initial_value
 
   def initialize(number)
-    setup(number)
+    convert_to_binary(number)
     @handshakes = []
     decrypt_code
   end
@@ -37,9 +38,9 @@ class SecretHandshake
 
   private
 
-  def setup(number)
+  def convert_to_binary(number)
     if number.instance_of?(Fixnum)
-      @binary_num = number.to_s(2).split(//) #converstion to binary must take place during initialization
+      @binary_num = number.to_s(2).split(//)
     else
       @binary_num = number.split(//)
     end
@@ -53,17 +54,25 @@ class SecretHandshake
     @binary_num.shift
   end
 
+  def populate_handshakes
+    @binary_num.each_with_index do |value, idx|
+      @handshakes << GESTURES[idx] if value == '1'
+    end
+  end
+
+  def reverse_populate_handshakes
+    @binary_num.each_with_index do |value, idx|
+      @handshakes << REVERSE_GESTURES[idx] if value == '1'
+    end
+  end
+
   def decrypt_code
     if @binary_num.size < 5
       reverse_number!
-      @binary_num.each_with_index do |value, idx|
-        @handshakes << GESTURES[idx] if value == '1'
-      end
+      populate_handshakes
     else
       remove_first_value!
-      @binary_num.each_with_index do |value, idx|
-        @handshakes << REVERSE_GESTURES[idx] if value == '1'
-      end
+      reverse_populate_handshakes
     end
   end
 end
