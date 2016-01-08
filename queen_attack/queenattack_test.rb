@@ -30,7 +30,6 @@ class QueensTest < Minitest::Test
   end
 
   def test_string_representation
-    skip
     queens = Queens.new(white: [2, 4], black: [6, 6])
     board = <<-BOARD.chomp
 _ _ _ _ _ _ _ _
@@ -46,7 +45,6 @@ _ _ _ _ _ _ _ _
   end
 
   def test_another_string_representation
-    skip
     queens = Queens.new(white: [7, 1], black: [0, 0])
     board = <<-BOARD.chomp
 B _ _ _ _ _ _ _

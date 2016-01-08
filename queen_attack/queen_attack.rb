@@ -17,16 +17,23 @@
 require 'pry'
 
 class Queens
-  attr_accessor :white, :black
+  attr_reader :white, :black
 
   def initialize(white: [0, 3], black: [7, 3])
     @white = white
     @black = black
-    raise_error_for_same_value
+    fail ArgumentError, 'Queens cannot share a place on the board' if white == black
   end
 
-  def raise_error_for_same_value
-    raise ArgumentError if white == black
+  def to_s
+    squares = Array.new(8) { Array.new(8, '_') }
+    place_queens_on_square(squares)
+    squares.map { |row| row.join(' ') }.join("\n")
+  end
+
+  def place_queens_on_square(squares)
+    squares[white[0]][white[1]] = 'W'
+    squares[black[0]][black[1]] = 'B'
   end
 end
 
