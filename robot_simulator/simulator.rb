@@ -62,6 +62,8 @@
 # - Say a robot starts at {7, 3} facing north. Then running this stream
 #   of instructions should leave it at {9, 4} facing west.
 
+require 'pry'
+
 # Top Level Class
 class Robot
   DIRECTIONS = [:west, :north, :east, :south]
@@ -115,5 +117,15 @@ class Robot
 end
 
 class Simulator
-  
+  INSTRUCTIONS = { 'L' => :turn_left, 'R' => :turn_right, 'A' => :advance }
+
+  def instructions(string)
+    string.each_char.map do |char|
+      INSTRUCTIONS[char]
+    end
+  end
+
+  def place(robot, x, y, direction)
+    
+  end
 end

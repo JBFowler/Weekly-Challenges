@@ -114,22 +114,18 @@ class RobotSimulatorTest < MiniTest::Unit::TestCase
   end
 
   def test_instructions_for_turning_left
-    skip
     assert_equal [:turn_left], simulator.instructions('L')
   end
 
   def test_instructions_for_turning_right
-    skip
     assert_equal [:turn_right], simulator.instructions('R')
   end
 
   def test_instructions_for_advancing
-    skip
     assert_equal [:advance], simulator.instructions('A')
   end
 
   def test_series_of_instructions
-    skip
     commands = [:turn_right, :advance, :advance, :turn_left]
     assert_equal commands, simulator.instructions('RAAL')
   end
