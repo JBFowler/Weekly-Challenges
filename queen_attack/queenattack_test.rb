@@ -60,7 +60,6 @@ _ W _ _ _ _ _ _
   end
 
   def test_yet_another_string_representation
-    skip
     queens = Queens.new(white: [4, 3], black: [3, 4])
     board = <<-BOARD.chomp
 _ _ _ _ _ _ _ _
@@ -76,43 +75,36 @@ _ _ _ _ _ _ _ _
   end
 
   def test_cannot_attack
-    skip
     queens = Queens.new(white: [2, 3], black: [4, 7])
     assert !queens.attack?
   end
 
   def test_can_attack_on_same_row
-    skip
     queens = Queens.new(white: [2, 4], black: [2, 7])
     assert queens.attack?
   end
 
   def test_can_attack_on_same_column
-    skip
     queens = Queens.new(white: [5, 4], black: [2, 4])
     assert queens.attack?
   end
 
   def test_can_attack_on_diagonal
-    skip
     queens = Queens.new(white: [1, 1], black: [6, 6])
     assert queens.attack?
   end
 
   def test_can_attack_on_other_diagonal
-    skip
     queens = Queens.new(white: [0, 6], black: [1, 7])
     assert queens.attack?
   end
 
   def test_can_attack_on_yet_another_diagonal
-    skip
     queens = Queens.new(white: [4, 1], black: [6, 3])
     assert queens.attack?
   end
 
   def test_can_attack_on_a_diagonal_slanted_the_other_way
-    skip
     queens = Queens.new(white: [6, 1], black: [1, 6])
     assert queens.attack?
   end

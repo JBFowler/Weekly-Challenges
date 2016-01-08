@@ -35,5 +35,24 @@ class Queens
     squares[white[0]][white[1]] = 'W'
     squares[black[0]][black[1]] = 'B'
   end
-end
 
+  def attack?
+    same_row? || same_column? || diagonal?
+  end
+
+  def same_row?
+    white[0] == black[0]
+  end
+
+  def same_column?
+    white[1] == black[1]
+  end
+
+  def diagonal?
+    (white[0] == white[1] && black[0] == black[1]) ||
+    ((white[0] - black[0]) == (black[1] - white[1])) ||
+    ((black[0] - white[0]) == (white[1] - black[1])) ||
+    ((black[0] - white[0]) == (black[1] - white[1])) ||
+    ((white[0] - black[0]) == (white[1] - black[1]))
+  end
+end
