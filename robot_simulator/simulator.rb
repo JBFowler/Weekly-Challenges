@@ -66,7 +66,7 @@
 class Robot
   DIRECTIONS = [:west, :north, :east, :south]
 
-  attr_accessor :bearing
+  attr_accessor :bearing, :x_coord, :y_coord
 
   def orient(direction)
     self.bearing = direction
@@ -91,6 +91,27 @@ class Robot
     end
   end
 
+  def at(x, y)
+    self.x_coord = x
+    self.y_coord = y
+  end
+
+  def coordinates
+    [x_coord, y_coord]
+  end
+
+  def advance
+    case bearing
+    when :west
+      self.x_coord -= 1
+    when :east
+      self.x_coord += 1
+    when :north
+      self.y_coord += 1
+    when :south
+      self.y_coord -= 1
+    end
+  end
 end
 
 class Simulator
