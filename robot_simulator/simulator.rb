@@ -82,6 +82,15 @@ class Robot
     end
   end
 
+  def turn_left
+    bearing_index = DIRECTIONS.index(bearing)
+    if bearing_index == 0
+      orient(DIRECTIONS[3])
+    else
+      orient(DIRECTIONS[bearing_index - 1])
+    end
+  end
+
 end
 
 class Simulator
