@@ -21,7 +21,9 @@
 # - Create Constant that holds array to represent handshakes
 
 class SecretHandshake
-  attr_accessor :initial_value
+  GESTURES = ['wink', 'double blink', 'close your eyes', 'jump']
+  REVERSE_GESTURES = ['jump', 'close your eyes', 'double blink', 'wink']
+  # attr_accessor :initial_value
 
   def initialize(number)
     setup(number)
@@ -29,62 +31,38 @@ class SecretHandshake
     decrypt_code
   end
 
-  def setup(number)
-    if number.instance_of?(Fixnum)
-      @initial_value = number.to_s(2).split(//) #converstion to binary must take place during initialization
-    else
-      @initial_value = number.split(//)
-    end
-  end
-
   def commands
     @handshakes
   end
 
-  def wink
-    "wink"
+  private
+
+  def setup(number)
+    if number.instance_of?(Fixnum)
+      @binary_num = number.to_s(2).split(//) #converstion to binary must take place during initialization
+    else
+      @binary_num = number.split(//)
+    end
   end
 
-  def double_blink
-    "double blink"
+  def reverse_number!
+    @binary_num.reverse!
   end
 
-  def close_your_eyes
-    "close your eyes"
-  end
-
-  def jump
-    "jump"
+  def remove_first_value!
+    @binary_num.shift
   end
 
   def decrypt_code
-    if @initial_value.size < 5
-      @initial_value.reverse!
-      if @initial_value[0] == '1'
-        @handshakes << wink
-      end
-      if !@initial_value[1].nil? && @initial_value[1] == '1'
-        @handshakes << double_blink
-      end
-      if !@initial_value[2].nil? && @initial_value[2] == '1'
-        @handshakes << close_your_eyes
-      end
-      if !@initial_value[3].nil? && @initial_value[3] == '1'
-        @handshakes << jump
+    if @binary_num.size < 5
+      reverse_number!
+      @binary_num.each_with_index do |value, idx|
+        @handshakes << GESTURES[idx] if value == '1'
       end
     else
-      @initial_value.shift
-      if @initial_value[0] == '1'
-        @handshakes << jump
-      end
-      if @initial_value[1] == '1'
-        @handshakes << close_your_eyes
-      end
-      if @initial_value[2] == '1'
-        @handshakes << double_blink
-      end
-      if @initial_value[3] == '1'
-        @handshakes << wink
+      remove_first_value!
+      @binary_num.each_with_index do |value, idx|
+        @handshakes << REVERSE_GESTURES[idx] if value == '1'
       end
     end
   end
