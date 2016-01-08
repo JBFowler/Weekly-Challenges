@@ -22,5 +22,11 @@ class Queens
   def initialize(white: [0, 3], black: [7, 3])
     @white = white
     @black = black
+    raise_error_for_same_value
+  end
+
+  def raise_error_for_same_value
+    raise ArgumentError if white == black
   end
 end
+
