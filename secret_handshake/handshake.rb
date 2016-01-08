@@ -23,56 +23,32 @@
 # Top level class
 class SecretHandshake
   GESTURES = ['wink', 'double blink', 'close your eyes', 'jump']
-  REVERSE_GESTURES = ['jump', 'close your eyes', 'double blink', 'wink']
-  # attr_accessor :initial_value
 
   def initialize(number)
-    convert_to_binary(number)
-    @handshakes = []
-    decrypt_code
+    convert_to_array(number)
   end
 
   def commands
-    @handshakes
+    binary_num = @binary_num
+    return [] if binary_num == 0
+    handshakes = []
+    binary_num.reverse!
+    binary_num[0..3].each_with_index do |value, idx|
+      handshakes << GESTURES[idx] if value == '1'
+    end
+    handshakes.reverse! if binary_num.size > 4
+    handshakes
   end
 
   private
 
-  def convert_to_binary(number)
+  def convert_to_array(number)
     if number.instance_of?(Fixnum)
       @binary_num = number.to_s(2).split(//)
+    elsif /[^01]/.match(number)
+      @binary_num = 0
     else
       @binary_num = number.split(//)
-    end
-  end
-
-  def reverse_number!
-    @binary_num.reverse!
-  end
-
-  def remove_first_value!
-    @binary_num.shift
-  end
-
-  def populate_handshakes
-    @binary_num.each_with_index do |value, idx|
-      @handshakes << GESTURES[idx] if value == '1'
-    end
-  end
-
-  def reverse_populate_handshakes
-    @binary_num.each_with_index do |value, idx|
-      @handshakes << REVERSE_GESTURES[idx] if value == '1'
-    end
-  end
-
-  def decrypt_code
-    if @binary_num.size < 5
-      reverse_number!
-      populate_handshakes
-    else
-      remove_first_value!
-      reverse_populate_handshakes
     end
   end
 end
