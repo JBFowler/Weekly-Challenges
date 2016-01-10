@@ -47,6 +47,10 @@ class Board
   def []=(num, marker)
     battlefield[[num[0].to_i, num[3].to_i]].marker = marker
   end
+
+  def empty_squares
+    battlefield.keys.select { |key| battlefield[key].marker == ' '}
+  end
 end
 
 class Square
@@ -105,21 +109,21 @@ class Human < Player
     self.name = name.capitalize
   end
 
-  def choose_square(opposing_board)
+  def choose_square(computer_board)
     square = ''
     puts "Please choose a square ex.(1, 3): "
     loop do
       square = gets.chomp
-      if opposing_board[square] == ' '
+      if square[0].to_i == 0 || square[1] != ',' || square[2] != ' ' || square[3].to_i == 0 || square[0].to_i > 6 || square[3].to_i > 6 || computer_board[square] == 'X'
+        puts "Square is either taken or outside of the board, please enter a valid square ex.(1, 3): "
+      elsif computer_board[square] == ' '
         # if hit? 
-          opposing_board[square] = 'X'
+          computer_board[square] = 'X'
           break
         # else
         #   opposing_board[square] = '/'
         #   break
         # end
-      else
-        puts "Square is either taken or outside of the board, please enter a valid square ex.(1, 3): "
       end
     end
   end
@@ -128,6 +132,11 @@ end
 class Computer < Player
   def set_name
     self.name = ['R2D2', 'John', 'Master Chief', 'C3P0', 'WALL-E', 'Baymax', 'Malfurion', 'Darth Vader'].sample
+  end
+
+  def choose_square(human_board)
+    available_squares = human_board.empty_squares
+    human_board[available_squares.sample.join(', ')] = 'X'
   end
 end
 
@@ -155,7 +164,7 @@ class Battleship
       human.choose_square(computer.board)
       @current_player = 'Computer'
     else
-      computer.choose_square
+      computer.choose_square(human.board)
       @current_player = 'Human'
     end 
   end
@@ -165,7 +174,6 @@ class Battleship
     loop do
       current_player_goes
       display_board
-      break
     end
   end
 end
