@@ -1,3 +1,5 @@
+require 'pry'
+
 class Board
 
   attr_reader :battlefield
@@ -29,13 +31,30 @@ class Board
     puts ''
     puts ships
   end
+
+  def check_square(square)
+    battlefield[square] == ' '
+  end
+
+  def mark_square(square)
+    
+  end
+
+  def [](num)
+    battlefield[[num[0].to_i, num[3].to_i]].marker
+  end
+
+  def []=(num, marker)
+    battlefield[[num[0].to_i, num[3].to_i]].marker = marker
+  end
 end
 
 class Square
   INITIAL_MARKER = ' '
+  attr_accessor :marker
 
-  def initialize(marker = INITIAL_MARKER)
-    @marker = marker
+  def initialize
+    @marker = INITIAL_MARKER
   end
 
   def to_s
@@ -77,12 +96,32 @@ end
 class Human < Player
   def set_name
     name = ''
+    puts "Please enter your name?"
     loop do
-      puts "Please enter your name?"
       name = gets.chomp
       break unless name.empty?
+      puts "Please enter a valid name: "
     end
     self.name = name.capitalize
+  end
+
+  def choose_square(opposing_board)
+    square = ''
+    puts "Please choose a square ex.(1, 3): "
+    loop do
+      square = gets.chomp
+      if opposing_board[square] == ' '
+        # if hit? 
+          opposing_board[square] = 'X'
+          break
+        # else
+        #   opposing_board[square] = '/'
+        #   break
+        # end
+      else
+        puts "Square is either taken or outside of the board, please enter a valid square ex.(1, 3): "
+      end
+    end
   end
 end
 
@@ -94,22 +133,40 @@ end
 
 class Battleship
 
-  attr_reader :player, :computer
+  attr_reader :human, :computer, :current_player
+
+  STARTING_PLAYER = 'Human'
 
   def initialize
-    @player = Human.new
+    @human = Human.new
     @computer = Computer.new
+    @current_player = STARTING_PLAYER
   end
 
   def display_board
     system 'clear'
-    player.draw_board
+    human.draw_board
     puts ''
     computer.draw_board
   end
 
+  def current_player_goes
+    if current_player == 'Human'
+      human.choose_square(computer.board)
+      @current_player = 'Computer'
+    else
+      computer.choose_square
+      @current_player = 'Human'
+    end 
+  end
+
   def play
     display_board
+    loop do
+      current_player_goes
+      display_board
+      break
+    end
   end
 end
 
