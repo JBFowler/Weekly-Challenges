@@ -14,10 +14,10 @@ class Board
     end
   end
 
-  def draw_battlefield(name)
+  def draw_battlefield(name, destroyer, cruiser, battleship)
     header = '     1   2   3   4   5   6'
     splitter = '   +---+---+---+---+---+---+'
-    ships = 'Destroyer : Alive    Cruiser: Alive    Battleship: Alive'
+    ships = "Destroyer : #{destroyer}    Cruiser: #{cruiser}    Battleship: #{battleship}"
     
     puts "#{name}'s Battlefield"
     puts header
@@ -43,16 +43,34 @@ class Square
   end
 end
 
+class Fleet
+  attr_accessor :destroyer, :cruiser, :battleship
+
+  def initialize
+    @destroyer = {status: 'Alive'}
+    @cruiser = {status: 'Alive'}
+    @battleship = {status: 'Alive'}
+    assign_board_spots_to_ships
+  end
+
+  def assign_board_spots_to_ships
+    destroyer[:position] = [[3, 3]]
+    cruiser[:position] = [[1, 5], [1, 6]]
+    battleship[:position] = [[5, 1], [5, 2], [5, 3]]
+  end
+end
+
 class Player
-  attr_accessor :name, :board
+  attr_accessor :name, :board, :fleet
 
   def initialize
     set_name
     @board = Board.new
+    @fleet = Fleet.new
   end
 
   def draw_board
-    board.draw_battlefield(name)
+    board.draw_battlefield(name, fleet.destroyer[:status], fleet.cruiser[:status], fleet.battleship[:status])
   end
 end
 
@@ -64,7 +82,7 @@ class Human < Player
       name = gets.chomp
       break unless name.empty?
     end
-    self.name = name
+    self.name = name.capitalize
   end
 end
 
@@ -84,6 +102,7 @@ class Battleship
   end
 
   def display_board
+    system 'clear'
     player.draw_board
     puts ''
     computer.draw_board
