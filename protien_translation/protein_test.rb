@@ -8,45 +8,38 @@ class TranslationTest < Minitest::Test
   end
 
   def test_identifies_Phenylalanine_codons
-    skip
     assert_equal 'Phenylalanine', Translation.of_codon('UUU')
     assert_equal 'Phenylalanine', Translation.of_codon('UUC')
   end
 
   def test_identifies_Leucine_codons
-    skip
     %w(UUA UUG).each do |codon|
       assert_equal 'Leucine', Translation.of_codon(codon)
     end
   end
 
   def test_identifies_Serine_codons
-    skip
     %w(UCU UCC UCA UCG).each do |codon|
       assert_equal 'Serine', Translation.of_codon(codon)
     end
   end
 
   def test_identifies_Tyrosine_codons
-    skip
     %w(UAU UAC).each do |codon|
       assert_equal 'Tyrosine', Translation.of_codon(codon)
     end
   end
 
   def test_identifies_Cysteine_codons
-    skip
     %w(UGU UGC).each do |codon|
       assert_equal 'Cysteine', Translation.of_codon(codon)
     end
   end
   def test_identifies_Tryptophan_codons
-    skip
     assert_equal 'Tryptophan', Translation.of_codon('UGG')
   end
 
   def test_identifies_stop_codons
-    skip
     %w(UAA UAG UGA).each do |codon|
       assert_equal 'STOP', Translation.of_codon(codon)
     end

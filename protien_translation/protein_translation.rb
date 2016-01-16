@@ -1,8 +1,13 @@
 class Translation
-  PROTEINS = { "Methionin" => ["AUG"], "Phenylalanin" => ["UUU", "UUC"], "Leucine" => ["UUA", "UUG"], "Serine" => ["UCU", "UCC", "UCA", "UCG"], "Tyrosine" => ["UAU", "UAC"], "Cystine" => ["UGU", "UGC"], "Tryptophan" => ["UGG"], "STOP" => ["UAA", "UAG", "UGA"]}
+  PROTEINS = { "Methionine" => ["AUG"], "Phenylalanine" => ["UUU", "UUC"], "Leucine" => ["UUA", "UUG"], "Serine" => ["UCU", "UCC", "UCA", "UCG"], "Tyrosine" => ["UAU", "UAC"], "Cysteine" => ["UGU", "UGC"], "Tryptophan" => ["UGG"], "STOP" => ["UAA", "UAG", "UGA"]}
 
-  def initialize(codon = '', rna = '')
-    @codon = codon
-    @rna = rna
+  def self.of_codon(codon)
+    str = ''
+    PROTEINS.keys.each do |key|
+      if PROTEINS[key].include?(codon)
+        str = key
+      end
+    end
+    str
   end
 end
