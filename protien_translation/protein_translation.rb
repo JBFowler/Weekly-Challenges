@@ -1,3 +1,6 @@
+class InvalidCodonError < StandardError
+end
+
 class Translation
   PROTEINS = { "Methionine" => ["AUG"], "Phenylalanine" => ["UUU", "UUC"], "Leucine" => ["UUA", "UUG"], "Serine" => ["UCU", "UCC", "UCA", "UCG"], "Tyrosine" => ["UAU", "UAC"], "Cysteine" => ["UGU", "UGC"], "Tryptophan" => ["UGG"], "STOP" => ["UAA", "UAG", "UGA"]}
 
@@ -15,6 +18,7 @@ class Translation
     final_strand = []
     new_rna = rna.scan(/.{3}/)
     new_rna.each do |value|
+      raise InvalidCodonError if PROTEINS.values.flatten.include?(value) == false
       PROTEINS.keys.each do |key|
         if PROTEINS[key].include?(value)
           if key == 'STOP'
