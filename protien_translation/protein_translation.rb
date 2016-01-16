@@ -10,4 +10,21 @@ class Translation
     end
     str
   end
+
+  def self.of_rna(rna)
+    final_strand = []
+    new_rna = rna.scan(/.{3}/)
+    new_rna.each do |value|
+      PROTEINS.keys.each do |key|
+        if PROTEINS[key].include?(value)
+          if key == 'STOP'
+            return final_strand
+          else
+            final_strand << key
+          end
+        end
+      end
+    end
+    final_strand
+  end
 end
