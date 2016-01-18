@@ -135,8 +135,8 @@ class Computer < Player
   end
 
   def choose_square(human_board)
-    available_squares = human_board.empty_squares
-    human_board[available_squares.sample.join(', ')] = 'X'
+    available_squares = human_board.empty_squares.sample.join(', ')
+    human_board[available_squares] = 'X'
   end
 end
 
